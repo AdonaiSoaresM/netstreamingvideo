@@ -4,8 +4,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+
+builder.Services.AddResponseCompression(options =>
+{
+    string[] mimeTypes = new string[] { "video/mp4" };
+    options.EnableForHttps = true;
+    options.MimeTypes = mimeTypes;
+});
+
 var app = builder.Build();
 
+app.UseResponseCompression();
 // Configure the HTTP request pipeline.
 app.UseCors(options =>
 {

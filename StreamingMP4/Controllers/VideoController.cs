@@ -15,15 +15,16 @@ namespace StreamingMP4.Controllers
         }
 
         [HttpGet("Video/{id}")]
-        public FileResult Video(int id)
+        public Task<FileStreamResult> Video(int id)
         {
             var filename = $"video{id}.mp4";
             string path = Path.Combine(_hostingEnviroment.ContentRootPath, "videos/") + filename;
 
-            var video = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 1000, true);
+            var video = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 1000, false);
+            
             var file = File(video, "video/mp4", enableRangeProcessing: true);
 
-            return file;
+            return Task.FromResult(file);
         }
     }
 }
